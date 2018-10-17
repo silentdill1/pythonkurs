@@ -1,3 +1,6 @@
+import numpy as np
+
+
 def sqrt(a):
     x0 = 0
     while x0**2 < a:
