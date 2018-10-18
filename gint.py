@@ -17,13 +17,16 @@ def gaussian_integration(derivative, initial_values, time_interval, rel_toleranc
 
     solver = GaussianSolver(derivative, time_interval, initial_values, rel_tolerance, error_estimation_method)
     time_points = np.array(time_interval[0])
-    y_values = np.array(initial_values)
+    y_values = np.empty((1, 2))
+    y_values[0] = initial_values
     current_time_point = time_interval[0]
     while current_time_point < time_interval[1]:
         try:
             current_time_point = solver.step(current_time_point)
             time_points = np.append(time_points, current_time_point)
-            y_values = np.append(y_values, solver.y)
+            a_y = np.empty((1, 2))
+            a_y[0] = solver.y
+            y_values = np.append(y_values, a_y, axis=0)
         except IterationsException as e:
             print(e)
             break

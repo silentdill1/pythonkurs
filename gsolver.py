@@ -5,6 +5,17 @@ class IterationsException(Exception):
     pass
 
 
+def has_greater_element(a, b):
+    if isinstance(a, np.ndarray):
+        for element1 in a:
+            for element2 in b:
+                if element1 > element2:
+                    return True
+        return False
+    else:
+        return a > b
+
+
 class GaussianSolver:
     def __init__(self, derivative, interval, initial_values, rel_tolerance, error_estimation_method):
         """
@@ -41,13 +52,12 @@ class GaussianSolver:
         :param time_point: current timepoint
         :return: next time point
         """
-        print(time_point)
         err = np.inf
         time_step = self.max_time_step
         tol = 0
         dyi = 0
         number_of_iterations = 0
-        while err > tol:
+        while has_greater_element(err, tol):
             time_step = time_step / 100
             if number_of_iterations > 10000:
                 raise IterationsException('too many iterations, error not converging?')
