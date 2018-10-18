@@ -22,29 +22,39 @@ def derivative3(n, t):
     change = np.array([dx_dt, dy_dt])
     return change
 
+'''
+def compare_solutions(ya, ta, yb, tb):
+    mutual_time_points = []
+    mutual_time_point_indices = []
+    if len(ta) > len(tb):
+        tl = ta
+        ts = tb
+        yl = ya
+        ys = yb
+    else:
+        tl = tb
+        ts = ta
+        yl = yb
+        ys = ya
+    for i in range(0, len(tl)):
+        for j in range(0, len(ts)):
+            if tl[i] == ts[j]:
+                mutual_time_points.append(ts[i])
+                mutual_time_point_indices.append((j, i))
+    y_value_differences = []
+    for indexPair in mutual_time_point_indices:
+        y_value_differences.append(yl[indexPair[0]] - ys[indexPair[1]])
+    return mutual_time_points, y_value_differences
+'''
 
 initialValues = np.array([10.0, 10.0])
-timePoints2 = np.linspace(0, 1, 101)
+timePoints3, yValues3 = gaussian_integration(derivative3, initialValues, (0, 1), rel_tolerance=10**(-12))
+timePoints2 = timePoints3
 timePoints, yValues = gaussian_integration(derivative3, initialValues, (0, 1), rel_tolerance=10**(-3))
 yValues2 = odeint(derivative3, initialValues, timePoints2)
-timePoints3, yValues3 = gaussian_integration(derivative3, initialValues, (0, 1), rel_tolerance=10**(-12))
+
 fig = plt.figure()
 plot = fig.add_subplot(111)
-'''
-mutualTimePoints = []
-mutualTimePointIndices = []
-for i in range(0, len(timePoints3)):
-    for j in range(0, len(timePoints)):
-        if timePoints3[i] == timePoints[j]:
-            mutualTimePoints.append(timePoints3[i])
-            mutualTimePointIndices.append((j, i))
-print(len(timePoints))
-print(len(timePoints3))
-yValueDifference = []
-for indexPair in mutualTimePointIndices:
-    yValueDifference.append(yValues[indexPair[0]] - yValues3[indexPair[1]])
-plot.plot(mutualTimePoints, yValueDifference)
-'''
 x1 = []
 y1 = []
 x2 = []
@@ -65,8 +75,17 @@ plot.plot(timePoints, y1, label='y high tolerance')
 plot.plot(timePoints, x1, label='x high tolerance')
 plot.plot(timePoints2, y2, label='x odeint')
 plot.plot(timePoints2, x2, label='y odeint')
-plot.plot(timePoints3, y3, label='x low tolerance')
-plot.plot(timePoints3, x3, label='y low tolerance')
+# plot.plot(timePoints3, y3, label='x low tolerance')
+# plot.plot(timePoints3, x3, label='y low tolerance')
+'''
+xDiff = []
+yDiff = []
+for i in range(0, len(yValues3)):
+    xDiff.append(yValues3[i][0]-yValues2[i][0])
+    yDiff.append(yValues3[i][1]-yValues2[i][1])
+plot.plot(timePoints3, yDiff, label='y diff')
+plot.plot(timePoints3, xDiff, label='x diff')
+'''
 fig.legend()
 
 plt.show()
