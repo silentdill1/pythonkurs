@@ -17,16 +17,18 @@ def has_greater_element(a, b):
 
 
 class GaussianSolver:
-    def __init__(self, derivative, interval, initial_values, rel_tolerance, error_estimation_method):
+    def __init__(self, derivative, interval, initial_values, rel_tolerance, p_tolerance, error_estimation_method):
         """
         :param derivative: function, returns derivative for timepoint
         :param interval: tuple, start / end timepoint
-        :param rel_tolerance: float, relative tolerance for integration step
+        :param rel_tolerance: float, relative tolerance for y value integration step
+        :param p_tolerance: float, p size in relation to time step size for method1
         :param error_estimation_method: integer, error estimation method
         """
         self.derivative = derivative
         self.max_time_step = interval[1] - interval[0]
         self.rTol = rel_tolerance
+        self.p = p_tolerance * self.max_time_step
         self.errEstMet = error_estimation_method
         self.y = initial_values
 
@@ -37,10 +39,9 @@ class GaussianSolver:
         :return: error estimate, tolerance, current y change
         """
         dy_dt = self.derivative(self.y, t)
-        p = h * 10**(-15)
         dyi = dy_dt * h
-        dyi_p = dy_dt * (h + p)
-        c = (dyi_p - dyi - dy_dt*p) / (2*h*p + p**2)
+        dyi_p = dy_dt * (h + self.p)
+        c = (dyi_p - dyi - dy_dt*self.p) / (2*h*self.p + self.p**2)
         err = c*h**2
         yi = self.y + dyi
         tol = yi * self.rTol

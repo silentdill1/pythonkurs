@@ -1,6 +1,7 @@
 import math
 import random
 
+
 def plus(a, b):
     return a+b
 
@@ -14,7 +15,10 @@ def hypot(a, b):
 
 
 def harmonic(n):
-    return 1/n + harmonic(n-1)
+    if n == 1:
+        return 1
+    else:
+        return 1/n + harmonic(n-1)
 
 
 def harmonics(li):
