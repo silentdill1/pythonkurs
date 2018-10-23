@@ -49,14 +49,16 @@ class Matrix(object):
 		matrix1 = self.matrix
 		matrix2 = matrix.matrix
 		if matrix1.shape != matrix2.shape:
-			raise Exception('Matrix need to have same dimensions.')
+			raise Exception('Matrices need to have same dimensions.')
 		else:
+			r_matrix_object = Matrix(matrix1.shape[0], matrix1.shape[1])
 			r_matrix = np.empty(matrix1.shape)
 			for row_index in range(matrix1.shape[0]):
 				for column_index in range(matrix1.shape[1]):
 					r_matrix[row_index][column_index] =	matrix1[row_index][column_index] + \
 														matrix2[row_index][column_index]
-			return r_matrix
+			r_matrix_object.matrix = r_matrix
+			return r_matrix_object
 
 	def __mul__(self, matrix):
 		matrix1 = self.matrix
@@ -67,11 +69,13 @@ class Matrix(object):
 		elif matrix1.shape[1] != matrix2.shape[0]:
 			raise Exception('Matrices cannot be multiplied, wrong dimensions')
 		else:
+			r_matrix_object = Matrix(matrix1.shape[0], matrix2.shape[1])
 			r_matrix = np.empty((matrix1.shape[0], matrix2.shape[1]))
 			for i in range(r_matrix.shape[0]):
 				for j in range(r_matrix.shape[1]):
-					r_matrix[i][j] = __dot_product(matrix1[i], transpose(matrix2)[j])
-			return r_matrix
+					r_matrix[i][j] = Matrix.__dot_product(matrix1[i], Matrix.transpose(matrix2)[j])
+			r_matrix_object.matrix = r_matrix
+			return r_matrix_object
 
 	def __sub__(self, matrix):
 		matrix1 = self.matrix
@@ -79,14 +83,26 @@ class Matrix(object):
 		if matrix1.shape != matrix2.shape:
 			raise Exception('Matrix need to have same dimensions.')
 		else:
+			r_matrix_object = Matrix(matrix1.shape[0], matrix1.shape[1])
 			r_matrix = np.empty(matrix1.shape)
 			for row_index in range(matrix1.shape[0]):
 				for column_index in range(matrix1.shape[1]):
 					r_matrix[row_index][column_index] =	matrix1[row_index][column_index] - \
 														matrix2[row_index][column_index]
-			return r_matrix
+			r_matrix_object.matrix = r_matrix
+			return r_matrix_object
+
+	def __str__(self):
+		matrix = self.matrix
+		string = ''
+		for i in range(matrix.shape[0]):
+			for j in range(matrix.shape[1]):
+				string += (str(matrix[i][j])+'\t')
+			string += '\n'
+		return string
 
 
-m = Matrix(2)
-a = Matrix(2)
-print(m*a)
+if __name__ == "__main__":
+	m = Matrix(2, 3)
+	a = Matrix(3, 2)
+	print(m, '*\n', a, '=\n', m*a)
