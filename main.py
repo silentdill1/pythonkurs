@@ -2,9 +2,10 @@ from gint import gaussian_integration
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.integrate import odeint
+from scipy.optimize import curve_fit
 from copy import deepcopy
 
-POLYNOMIAL_DEGREE = 8
+POLYNOMIAL_DEGREE = 10
 
 def derivative1(y, t):
     dy_dt = -y
@@ -77,15 +78,21 @@ def polynomial_fit(xa, ta, xb, tb):
         for variableIndex in range(xa.shape[0]):
             coefficients_a[variableIndex] = np.polyfit(ta, xa[variableIndex], POLYNOMIAL_DEGREE)
         li = []
-        for t in tb:
-            li.append(vectorial_field(t, coefficients_b)[1])
+        for t in ta:
+            li.append(vectorial_field(t, coefficients_a)[1])
         fig = plt.figure()
         plot = fig.add_subplot(111)
-        plot.plot(tb, li)
-        plot.plot(tb, xb[1])
+        plot.plot(ta, li)
+        #plot.plot(ta, xa[1])
         fig.savefig('bla.png')
         for variableIndex in range(xb.shape[0]):
             coefficients_b[variableIndex] = np.polyfit(tb, xb[variableIndex], POLYNOMIAL_DEGREE)
+        li2 = []
+        for t in tb:
+            li2.append(vectorial_field(t, coefficients_b)[1])
+        plot.plot(tb, li2, label='fit')
+        #plot.plot(tb, xb[1], label='function')
+        fig.legend()
         return coefficients_a, coefficients_b
     elif isinstance(xa.shape, int) and (xa.shape[1] == xb.shape[1]):
         coefficients_a = np.polyfit(ta, xa, POLYNOMIAL_DEGREE)
