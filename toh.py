@@ -123,7 +123,7 @@ class TowersOfHanoi(object):
 		while self.is_stack_available():
 			smallest_disc_position, smallest_disc_size = self.find_smallest_disc(stack_status)
 			next_position = np.empty(2)
-			if smallest_disc_position < 0:
+			if smallest_disc_position < 0: #TODO: shit!!!!
 				next_position[0] = smallest_disc_position[0]-1
 				while next_position[0] > 0:
 					next_position[1] = stack_status[next_position[0]][0]+1
