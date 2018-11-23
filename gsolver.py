@@ -60,7 +60,7 @@ class GaussianSolver:
         number_of_iterations = 0
         while has_greater_element(err, tol):
             time_step = time_step / 100
-            if number_of_iterations > 10000:
+            if number_of_iterations > 10**6:
                 raise IterationsException('too many iterations, error not converging?')
             if self.errEstMet == 1:
                 err, tol, dyi = self.estimate_error1(time_point, time_step)
