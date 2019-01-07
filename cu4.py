@@ -29,7 +29,7 @@ def number_to_pattern(index, k):
 
 def computing_frequencies(text, k):
     frequency_array = np.zeros(4**k)
-    for start_index in range(len(text)-k):
+    for start_index in range(len(text)-k+1):
         k_mer = text[start_index:start_index+k]
         index = pattern_to_number(k_mer)
         frequency_array[index] += 1
@@ -61,11 +61,11 @@ for a in range(1, 15):
     end = time.time()
     li.append(end-start)
 '''
-for a in range(1, 1000):
+for a in range(1, 200):
     start = time.time()
     faster_frequent_words(long_string(a), 4)
     end = time.time()
     li2.append(end-start)
 # plt.plot(range(1, 15), li)
-plt.plot(range(1, 1000), li2)
+plt.plot(range(1, 200), li2)
 plt.show()

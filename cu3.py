@@ -18,7 +18,7 @@ def hd(k_mer, text):
 
 def frequent_words(k, d, text):
     k_mers = {}
-    for i in range(len(text)-k):
+    for i in range(len(text)-k+1):
         current_k_mer = text[i:i+k]
         k_mers[current_k_mer] = -1
         for j in range(len(text)-k):
