@@ -27,7 +27,20 @@ def string_matrix_to_profile(string_matrix):
             letter_index = SYM_TO_NUM[string[position]]
             frequencies_for_position[letter_index] += 1/number_of_strings
         profile_matrix[position] = frequencies_for_position
-    return profile_matrix.T
+    return profile_matrix
+
+
+def string_matrix_to_profile_wpc(string_matrix):
+    string_length = len(string_matrix[0])
+    number_of_strings = len(string_matrix)
+    profile_matrix = np.zeros((string_length, 4))
+    for position in range(string_length):
+        counts_for_position = np.array([1, 1, 1, 1])
+        for string in string_matrix:
+            letter_index = SYM_TO_NUM[string[position]]
+            counts_for_position[letter_index] += 1
+        profile_matrix[position] = counts_for_position/(number_of_strings+1)
+    return profile_matrix
 
 
 def profile_to_consensus_string(profile):
@@ -62,7 +75,3 @@ def motif_enumeration(dna, k, d):
             if is_motif:
                 patterns.add(pattern)
     return patterns
-
-
-data = read_data_from_file('data.txt')
-print(len(motif_enumeration(data, 5, 2)))

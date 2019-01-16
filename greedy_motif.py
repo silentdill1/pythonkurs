@@ -16,6 +16,19 @@ def string_matrix_to_profile(string_matrix):
     return profile_matrix
 
 
+def string_matrix_to_profile_wpc(string_matrix):
+    string_length = len(string_matrix[0])
+    number_of_strings = len(string_matrix)
+    profile_matrix = np.zeros((string_length, 4))
+    for position in range(string_length):
+        counts_for_position = np.array([1, 1, 1, 1])
+        for string in string_matrix:
+            letter_index = SYM_TO_NUM[string[position]]
+            counts_for_position[letter_index] += 1
+        profile_matrix[position] = counts_for_position/(number_of_strings+1)
+    return profile_matrix
+
+
 def det_pmp_k_mer(text, profile):
     k = len(profile)
     highest_score = 0
@@ -56,6 +69,23 @@ def greedy_motif_search(dna, k):
     return best_motifs
 
 
+def greedy_motif_search_wpc(dna, k):
+    initial_motifs = []
+    for line in dna:
+        initial_motifs.append(line[:k])
+    initial_profile = string_matrix_to_profile_wpc(initial_motifs)
+    best_motifs = []
+    is_first = True
+    for line in dna:
+        if is_first:
+            best_motifs.append(det_pmp_k_mer(line, initial_profile))
+            is_first = False
+        else:
+            current_profile = string_matrix_to_profile_wpc(best_motifs)
+            best_motifs.append(det_pmp_k_mer(line, current_profile))
+    return best_motifs
+
+
 data = read_data_from_file('greedy_data.txt')
-print(greedy_motif_search(data, 3))
+print(greedy_motif_search_wpc(data, 3))
 
