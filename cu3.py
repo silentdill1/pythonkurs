@@ -24,7 +24,8 @@ def frequent_words(k, d, text):
         for j in range(len(text)-k):
             if hd(current_k_mer, text[j:j+k]) <= d:
                 k_mers[current_k_mer] += 1
-    max_num = max(k_mers.items(), key=(lambda v: v[1]))[1]
+    max_num = max(k_mers.values())
+    # max(k_mers.items(), key=(lambda v: v[1]))[1]
     most_freq = {}
     for key, value in k_mers.items():
         if value == max_num:
