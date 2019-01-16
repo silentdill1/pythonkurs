@@ -1,3 +1,5 @@
+LETTERS = ['A', 'G', 'C', 'T']
+
 
 def read_data_from_file(filename):
     with open(filename) as f:
@@ -34,5 +36,29 @@ def det_median_string(dna, k):
     return median_string
 
 
+def det_possible_k_mers(k):
+    if k == 1:
+        return LETTERS
+    else:
+        k_mer_list = []
+        for fragment in det_possible_k_mers(k-1):
+            for letter in LETTERS:
+                k_mer_list.append(fragment+letter)
+        return k_mer_list
+
+
+def faster_median_string(dna, k):
+    median_string = ''
+    possible_strings = det_possible_k_mers(k)
+    min_hd_sum = k * len(dna)
+    for pattern in possible_strings:
+        hd_sum = sum([hd(pattern, line) for line in dna])
+        # unnecessary expensive list creation
+        if hd_sum < min_hd_sum:
+            min_hd_sum = hd_sum
+            median_string = pattern
+    return median_string
+
+
 data = read_data_from_file('median_data.txt')
-print(det_median_string(data, 3))
+print(faster_median_string(data, 5))
