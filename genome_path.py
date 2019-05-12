@@ -69,7 +69,6 @@ for read in data:
 
 adjacencyMatrix = adjacencyMatrix[0:currentIndex + 1, 0:currentIndex + 1]  # removing unused matrix elements
 
-
 # TODO: check if eulerian graph
 
 # determining start / end node
