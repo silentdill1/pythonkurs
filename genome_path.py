@@ -27,7 +27,7 @@ def fragment_to_number_code(fragment):
         code += LETTER_TO_NUMBER[letter]
     return int(code)
 '''
-
+# TODO: check if works with more complex de bruyn graphs
 data = read_data_from_file('data_genome_ass.txt')  # list of Strings representing genome reads
 numberOfReads = len(data)
 maxNumberOfNodes = 2 * numberOfReads
@@ -182,6 +182,7 @@ for read_index in assembledPath:
         genome += indexToNode[read_index][-1]
 
 print(genome)
+
 '''
 length = False  # read length
 numberOfReads = len(data)
