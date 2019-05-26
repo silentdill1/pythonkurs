@@ -28,7 +28,7 @@ def fragment_to_number_code(fragment):
     return int(code)
 '''
 
-data = read_data_from_file('data_genom_ass.txt')  # list of Strings representing genome reads
+data = read_data_from_file('data_genome_ass.txt')  # list of Strings representing genome reads
 numberOfReads = len(data)
 maxNumberOfNodes = 2 * numberOfReads
 length = None  # length of reads
@@ -91,7 +91,7 @@ if endIndex is None or startIndex is None:
 
 # finding eulerian path
 remainingConnections = numberOfReads
-remainingOutgoingConnections = adjacencyMatrix.T[1]
+remainingOutgoingConnections = numberOfConnections.T[1]
 jigsawPath = []  # list of lists containing index for input into assembled path (0) and list with read indices in order (1)
 assembledPath = []  # list of read indices representing path for linear genome
 currentIndex = None  # index of node at end of current path
@@ -166,7 +166,6 @@ while remainingConnections != 0:
 
 
 # reconstructing genome string based on path
-print(assembledPath)
 
 indexToNode = {}
 for key, value in nodeToIndex.items():
